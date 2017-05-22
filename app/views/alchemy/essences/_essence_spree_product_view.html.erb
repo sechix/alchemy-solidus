@@ -9,36 +9,14 @@
         <%= link_to truncate(product.name, length: 50), url, class: 'info', itemprop: "name", title: product.name %>
       </div>
       <br>
-      <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-             <span class="price-product" itemprop="price"><%= display_price(product) %></span>
-             <span class="price-buy-product" itemprop="price" >€ 46 compra</span>
-      </span>
     <% end %>
    
                                      <div class="quick-buy">
                                       <div class="product-share">
-                                          
-                                          <% if spree_current_user %>
-                                             
-                                           
-                                                <%= form_for Spree::WishedProduct.new do |f| %>
-                                                    
-                                                      <%= f.hidden_field :variant_id, value: product.master.id %>
-                                                      <%= f.hidden_field :quantity %>
-                                                  
-                                                      <button type="submit" class="highlight-button btn btn-small no-margin-right quick-buy-btn" title="Guardar"><i class="fa fa-heart-o"></i>
-                                                   </button>
-                                                <% end %>
-                                             
-
-
-                                          <% else %>
-                                              <a href="/login" class="highlight-button btn btn-small no-margin-right quick-buy-btn" title="Guardar"><i class="fa fa-heart-o"></i></a>
-
-                                            <% end %>
+                                        
                                           <!-- insert_top 'div.product-body' -->
                                           <%= link_to url, remote: true, class: "quickshop" do %>
-                                            <a href="#modal-popup2" class="highlight-button btn btn-small no-margin-right quick-buy-btn popup-with-zoom-anim no-margin-bottom" title="Añadir al carrito">Vista Rápida</a>
+                                            <a href="#modal-popup2" class="highlight-button btn btn-small no-margin-right quick-buy-btn popup-with-zoom-anim no-margin-bottom" title="Añadir al carrito"><%= display_price(product) %></a>
                                           <% end %>
                                           
                                                 <!-- modal popup -->
