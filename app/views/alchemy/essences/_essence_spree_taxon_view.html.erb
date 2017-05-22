@@ -3,7 +3,10 @@
 
 <div class="taxon" data-hook="taxon">
   <h5 class="subtaxon-title">
-    <%= link_to taxon.name, seo_url(taxon), class: 'breadcrumbs' %>
+    <%= link_to(image_tag(@taxon.icon(:normal) , :class => 'img-circle '), seo_url(@taxon))  %> 
   </h5>
-  <%= render 'spree/shared/products', products: taxon_preview(taxon), taxon: taxon %>
+  <div data-hook="taxon_products">
+  <%= render partial: 'spree/shared/products', locals: { products: @products, taxon: @taxon } %>
+</div>
+
 </div>

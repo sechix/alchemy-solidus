@@ -1,19 +1,55 @@
 
 <% product = content.ingredient %>
-<% url = spree.product_url(product, taxon_id: @taxon.try(:id)) %>
+<% url = spree.product_path(product, taxon_id: @taxon.try(:id)) %>
 
-<div id="product_<%= product.id %>" class="col-md-3 col-sm-6 product-list-item" data-hook="products_list_item" itemscope itemtype="http://schema.org/Product">
-  <div class="panel panel-default">
-    <% cache(@taxon.present? ? [I18n.locale, current_currency, @taxon, product] : [I18n.locale, current_currency, product]) do %>
-      <div class="panel-body text-center product-body">
-        <%= link_to small_image(product, itemprop: "image"), url, itemprop: 'url' %><br/>
+<li id="product_<%= product.id %>"  class="home-product text-center position-relative overflow-hidden margin-ten no-margin-top" data-hook="products_list_item" itemscope itemtype="http://schema.org/Product">
+    <% cache(@taxon.present? ? [I18n.locale, current_pricing_options, @taxon, product] : [I18n.locale, current_pricing_options, product]) do %>
+      <div class="product-image">
+        <%= link_to image_tag(product.display_image.attachment(:small), itemprop: "image"), url, itemprop: 'url' %><br/>
         <%= link_to truncate(product.name, length: 50), url, class: 'info', itemprop: "name", title: product.name %>
       </div>
-      <div class="panel-footer text-center">
-        <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-          <span class="price selling lead" itemprop="price"><%= display_price(product) %></span>
-        </span>
-      </div>
+      <br>
+      <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+             <span class="price-product" itemprop="price"><%= display_price(product) %></span>
+             <span class="price-buy-product" itemprop="price" >€ 46 compra</span>
+      </span>
     <% end %>
-  </div>
-</div>
+   
+                                     <div class="quick-buy">
+                                      <div class="product-share">
+                                          
+                                          <% if spree_current_user %>
+                                             
+                                           
+                                                <%= form_for Spree::WishedProduct.new do |f| %>
+                                                    
+                                                      <%= f.hidden_field :variant_id, value: product.master.id %>
+                                                      <%= f.hidden_field :quantity %>
+                                                  
+                                                      <button type="submit" class="highlight-button btn btn-small no-margin-right quick-buy-btn" title="Guardar"><i class="fa fa-heart-o"></i>
+                                                   </button>
+                                                <% end %>
+                                             
+
+
+                                          <% else %>
+                                              <a href="/login" class="highlight-button btn btn-small no-margin-right quick-buy-btn" title="Guardar"><i class="fa fa-heart-o"></i></a>
+
+                                            <% end %>
+                                          <!-- insert_top 'div.product-body' -->
+                                          <%= link_to url, remote: true, class: "quickshop" do %>
+                                            <a href="#modal-popup2" class="highlight-button btn btn-small no-margin-right quick-buy-btn popup-with-zoom-anim no-margin-bottom" title="Añadir al carrito">Vista Rápida</a>
+                                          <% end %>
+                                          
+                                                <!-- modal popup -->
+                                                <div id="modal-popup2" class="zoom-anim-dialog mfp-hide col-lg-3 col-md-6 col-sm-7 col-xs-11 center-col bg-white text-center modal-popup-main">
+                                              
+                                                
+
+                                               
+
+                                                </div>
+                                               <!-- end modal popup -->
+                                    </div>
+                                   </div>
+</li>
